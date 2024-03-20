@@ -60,11 +60,6 @@ Clone the repository: Use git clone with the --separate-git-dir flag to specify 
 If your home directory already contains configuration files, cloning might fail because of conflicts. As a workaround, you can clone the repository into a temporary directory, copy the files to your home directory, and then remove the temporary directory.
 
 
-```
     git clone --separate-git-dir=$HOME/.dotfiles https://github.com/thedavidwenk/dotfiles.git tmpdotfiles
     rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
     rm -r tmpdotfiles
-
-```
-
-Source / Inspiration: https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/
