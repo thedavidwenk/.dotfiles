@@ -1,72 +1,70 @@
-**First Time Setup**
+This guide will help you get your development environment set up with your dotfiles stored in a version controlled repository.
 
-Setting
- this method up the first time is really easy. First, let’s create our 
-bare repository. I chose to name my placeholder .dotfiles (duh!)
+I got inspried by Anand Iyer's Blog Post: [A Simpler Way to Manage your Dotfiles](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/)
 
-```
-mkdir $HOME/.dotfiles
-git init --bare $HOME/.dotfiles
+## First Time Setup
 
-```
+### Creating the Repository:
 
-Now for the fun part. We will make an alias for running git commands in our .dotfiles repository. I’m calling my alias dotfiles:
+Make a directory: Create a hidden directory in your home directory named .dotfiles to store your configuration files.
 
-```
-alias dotfiles='/usr/local/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+    mkdir $HOME/.dotfiles
 
-```
+### Initialize the Git repository: 
 
-Add this alias to your .bashrc or .zshrc. 
-From now on, any git operation you would like to do in the .dotfiles 
-repository can be done by the dotfiles alias. The cool thing is that you
- can run dotfiles from anywhere.
+We'll use git init to create a bare Git repository inside the .dotfiles directory. This means the actual Git data is stored separately from your working files.
+Bash
 
-Let’s add a remote, and also set status not to show untracked files:
+    git init --bare $HOME/.dotfiles
 
-```
-dotfiles config --local status.showUntrackedFiles no
-dotfiles remote add origin git@github.com:thedavidwenk/dotfiles.git
+### Setting Up an Alias:
 
-```
+Create an alias: An alias is a shortcut for a longer command. We'll create an alias named dotfiles to simplify running Git commands on your dotfiles repository. You can customize the alias name to your preference.
+    
+    alias dotfiles='/usr/local/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-You’ll need to change the remote URL to 
-your git repo. Now, you can easily add the config files you want to be 
-in version control from where they are supposed to be, commit and push. 
-For example, to add tmux config files, I’ll do:
+    Add the alias to your shell configuration: We need to add the alias definition to your shell configuration file (e.g., .bashrc or .zshrc). This will make the dotfiles alias available whenever you open your terminal.
 
-```
-cd $HOME
-dotfiles add .tmux.conf
-dotfiles commit -m "Add .tmux.conf"
-dotfiles push
+### Configuring the Repository:
 
-```
+Hide untracked files: By default, Git shows untracked files (files not yet added to the repository). We can configure Git to ignore these for a cleaner status view.   
 
-**Setting Up a New Machine**
+    dotfiles config --local status.showUntrackedFiles no
 
-To
- set up a new machine to use your version controlled config files, all 
-you need to do is to clone the repository on your new machine telling 
-git that it is a bare repository:
+Add a remote repository: A remote repository is a copy of your Git repository hosted on GitHub. You'll need to replace git@github.com:thedavidwenk/dotfiles.git with the URL of your own remote repository.
+Bash
 
-```
-git clone --separate-git-dir=$HOME/.dotfiles https://github.com/thedavidwenk/dotfiles.git ~
+    dotfiles remote add origin git@github.com:your-username/your-dotfiles-repo.git
 
-```
+### Adding Configuration Files:
 
-However, some programs create default 
-config files, so this might fail if git finds an existing config file in
- your $HOME. In that case, a simple solution is to clone to a temporary 
-directory, and then delete it once you are done:
+Now you can start adding your configuration files (e.g., .tmux.conf) to version control.
 
-```
-git clone --separate-git-dir=$HOME/.dotfiles https://github.com/thedavidwenk/dotfiles.git tmpdotfiles
-rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
-rm -r tmpdotfiles
+Navigate to your home directory:
+
+    cd $HOME
+
+    dotfiles add gitconfig
+    dotfiles commit -m "Add gitconfig"
+    dotfiles push -u origin master
+
+# Setting Up a New Machine
+
+To use your dotfiles on a new machine, follow these steps:
+
+Clone the repository: Use git clone with the --separate-git-dir flag to specify the location of the bare repository and your home directory. Replace https://github.com/thedavidwenk/dotfiles.git with the URL of your remote repository.
+
+    git clone --separate-git-dir=$HOME/.dotfiles https://github.com/your-username/your-dotfiles-repo.git ~
+
+
+If your home directory already contains configuration files, cloning might fail because of conflicts. As a workaround, you can clone the repository into a temporary directory, copy the files to your home directory, and then remove the temporary directory.
+
 
 ```
+    git clone --separate-git-dir=$HOME/.dotfiles https://github.com/thedavidwenk/dotfiles.git tmpdotfiles
+    rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
+    rm -r tmpdotfiles
 
-Source: (
+```
 
-https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/
+Source / Inspiration: https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/
