@@ -2,7 +2,7 @@ This guide will help you get your development environment set up with your dotfi
 
 I got inspried by Anand Iyer's Blog Post: [A Simpler Way to Manage your Dotfiles](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/)
 
-## First Time Setup
+# First Time Setup
 
 ### Creating the Repository:
 
